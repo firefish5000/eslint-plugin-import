@@ -111,11 +111,11 @@ ruleTester.run('no-default-export', rule, {
       }],
     }),
     test({
-      code: 'export default from "foo.js"',
+      code: 'export { default } from "foo.js"',
       parser: require.resolve('babel-eslint'),
       errors: [{
-        type: 'ExportNamedDeclaration',
-        message: 'Prefer named exports.',
+        type: 'ExportDefaultDeclaration',
+        message: 'Do not export `default` itself. Give it an alias instead.',
       }],
     }),
   ],
