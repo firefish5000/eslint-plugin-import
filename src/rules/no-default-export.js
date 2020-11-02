@@ -16,6 +16,7 @@ module.exports = {
     }
 
     const preferNamed = 'Prefer named exports.'
+    const preferAliasedDefault = 'Do not export `default` itself. Give it an alias instead.'
     const noAliasDefault = ({local}) =>
       `Do not alias \`${local.name}\` as \`default\`. Just export ` +
       `\`${local.name}\` itself instead.`
@@ -32,7 +33,12 @@ module.exports = {
             context.report({node, message: preferNamed})
           } else if (specifier.type === 'ExportSpecifier' &&
               specifier.exported.name === 'default') {
-            context.report({node, message: noAliasDefault(specifier)})
+            if (specifier.name === 'default') {
+              context.report({node, message: preferAliasedDefault})
+            }
+            else {
+              context.report({node, message: noAliasDefault(specifier)})
+            }
           }
         })
       },
